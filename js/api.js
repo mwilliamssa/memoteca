@@ -22,10 +22,36 @@ const api = {
             });
             return await response.json();
         }catch{
-            console.log("Erro ao buscar pensamentos");
+            console.log("Erro ao salvar pensamentos");
             throw error; // caso o usuario nao poss
         };
     },
+
+    async buscarPensamentoPorId(id){ // função em que será feita a busca do id
+        try{
+            const response = await fetch(`http://localhost:3000/pensamentos/${id}`);
+            return await response.json();
+        }catch{
+            console.log("Erro ao buscar pensamento");
+            throw error; 
+        };
+    },
+    async editarPensamento(pensamento){ 
+        try{
+            const response = await fetch(`http://localhost:3000/pensamentos/${pensamento.id}`, {
+                method: "PUT", // para editar dados já existentes
+                headers: {
+                    "Content-Type": "application/json"  
+                },
+                body: JSON.stringify(pensamento) 
+            });
+            return await response.json();
+        }catch{
+            console.log("Erro ao editar pensamentos");
+            throw error; 
+        };
+    },
+    
 };
 
 export default api

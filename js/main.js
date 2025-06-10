@@ -19,12 +19,17 @@ async function manipularSubmissaoFormulario(event) {
     const autoria = document.getElementById("pensamento-autoria").value; // pega o valor da autoria do pensamento
 
     try{
-        await api.salvarPensamento({id, conteudo, autoria}); // vai enviar as informacoes que sao como parametro para a funcao de salvar que esta no arquivo api
+        if(id){ // se o cnteúdo possuir o ID, ou seja, se ele ja foi cadastrado e quer ser editado vai entrar no if
+            await api.editarPensamento({id, conteudo, autoria});
+        }else{
+            await api.salvarPensamento({id, conteudo, autoria}); // vai enviar as informacoes que sao como parametro para a funcao de salvar que esta no arquivo api
+        }
         ui.renderizarPensamentos(); // vai mostrar os pensamentos
     }catch{
         alert("Erro ao salvar pensamento");
     }
 };
+
 
 function manipularCancelamento(){
     ui.limparFormulario();
