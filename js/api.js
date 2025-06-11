@@ -1,7 +1,9 @@
+const URL_BASE = "http://localhost:3000"
+
 const api = {
     async buscarPensamentos(){
         try{
-            const response = await fetch("http://localhost:3000/pensamentos"); // Por padrão faz um method GET
+            const response = await fetch(`${URL_BASE}/pensamentos`); // Por padrão faz um method GET
             return await response.json();
         }catch{
             console.log("Erro ao buscar pensamentos");
@@ -10,7 +12,7 @@ const api = {
     },
     async salvarPensamento(pensamento){ // funcao que vai salvar novos pensamentos, o parametro vai ser um objeto que recebe o id, conteudo e autoria
         try{
-            const response = await fetch("http://localhost:3000/pensamentos", {
+            const response = await fetch(`${URL_BASE}/pensamentos`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"  //o conteúdo a ser enviado vai ser do tipo json
@@ -29,7 +31,7 @@ const api = {
 
     async buscarPensamentoPorId(id){ // função em que será feita a busca do id
         try{
-            const response = await fetch(`http://localhost:3000/pensamentos/${id}`);
+            const response = await fetch(`${URL_BASE}/pensamentos/${id}`);
             return await response.json();
         }catch{
             console.log("Erro ao buscar pensamento");
@@ -38,7 +40,7 @@ const api = {
     },
     async editarPensamento(pensamento){ 
         try{
-            const response = await fetch(`http://localhost:3000/pensamentos/${pensamento.id}`, {
+            const response = await fetch(`${URL_BASE}/pensamentos/${pensamento.id}`, {
                 method: "PUT", // para editar dados já existentes
                 headers: {
                     "Content-Type": "application/json"  
@@ -51,6 +53,16 @@ const api = {
             throw error; 
         };
     },
+    async excluirPensamento(id){ 
+        try{
+            const response = await fetch(`${URL_BASE}/pensamentos/${id}`, {
+                method: "DELETE", // para excluir dados já existentes, nesse caso, não precisamos do Headers nem do body, me do retorno.
+            });
+        }catch{
+            console.log("Erro ao excluir um pensamento");
+            throw error; 
+        };
+    }
     
 };
 

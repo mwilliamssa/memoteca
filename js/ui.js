@@ -14,8 +14,11 @@ const ui = {
         try{
             const pensamentos = await api.buscarPensamentos(); // acessa a funçao que esta dentro do objeto api
 
-            pensamentos.forEach(pensamento => ui.adicionarPensamentoNaLista(pensamento)); // vai acessar os pensamentos individualmente e ira mandar para a funcao que monta o card
-
+            if(pensamentos.length > 0){
+                pensamentos.forEach(pensamento => ui.adicionarPensamentoNaLista(pensamento)); // vai acessar os pensamentos individualmente e ira mandar para a funcao que monta o card
+            }else{
+                document.getElementById("mensagem-vazia").style.display = "block";
+            }
         }catch{
             alert("Erro ao redenrizar pensamentos");
         }
@@ -50,9 +53,26 @@ const ui = {
         iconeEditar.alt = "Editar";
         botaoEditar.appendChild(iconeEditar);
 
+        const botaoExcluir = document.createElement("button");
+        botaoExcluir.classList.add("botao-excluir");
+        botaoExcluir.addEventListener("click", async () => {
+            try{
+                await api.excluirPensamento(pensamento.id);
+                ui.renderizarPensamentos();
+            }catch{
+                console.log("Não foi possível excluir o pensamento");
+            }
+        });
+
+        const iconeExcluir = document.createElement("img");
+        iconeExcluir.src = "assets/imagens/icone-excluir.png";
+        iconeExcluir.alt = "Excluir";
+        botaoExcluir.appendChild(iconeExcluir);
+
         const icones = document.createElement("div")
         icones.classList.add("icones")
         icones.appendChild(botaoEditar)
+        icones.appendChild(botaoExcluir)
 
         li.appendChild(iconeAspas); // construindo o HTML
         li.appendChild(conteudoPensamento);
@@ -60,6 +80,7 @@ const ui = {
         li.appendChild(icones);
 
         listaPensamentos.appendChild(li);
+
     },
 
     limparFormulario(){
